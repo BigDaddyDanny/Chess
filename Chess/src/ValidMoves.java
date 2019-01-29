@@ -280,8 +280,7 @@ public class ValidMoves {
 				}else {	
 
 					if (b[x + one][y + two] == null || Type.getTeam(b[x + one][y + two]) != team) {
-						System.out.println(String.valueOf(x) + String.valueOf(y) + String.valueOf(x + one)
-								+ String.valueOf(y + two));
+						
 						moves.add(String.valueOf(x) + String.valueOf(y) + String.valueOf(x + one)
 								+ String.valueOf(y + two));
 					}
@@ -290,8 +289,7 @@ public class ValidMoves {
 				if (x + two < 0 || x + two > 7 || y + one < 0 || y + one > 7) {
 				}else {
 					if (b[x + two][y + one] == null || Type.getTeam(b[x + two][y + one]) != team) {
-						System.out.println(String.valueOf(x) + String.valueOf(y) + String.valueOf(x + two)
-								+ String.valueOf(y + one));
+						
 						moves.add(String.valueOf(x) + String.valueOf(y) + String.valueOf(x + two)
 								+ String.valueOf(y + one));
 					}

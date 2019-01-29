@@ -44,29 +44,29 @@ public class Draw extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		whiteKing = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhiteKing.png"));
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhiteKing.png"));
 		blackKing = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackKing.png"));
-		whiteQueen = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhiteQueen.png"));
-		blackQueen = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackQueen.png"));
-		whiteRook = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhiteRook.png"));
-		blackRook = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackRook.png"));
-		whiteBishop = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhiteBishop.png"));
-		blackBishop = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackBishop.png"));
-		whiteKnight = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhiteKnight.png"));
-		blackKnight = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackKnight.png"));
-		blackPawn = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\BlackPawn.png"));
-		whitePawn = new Image(
-				new FileInputStream("C:\\Users\\Danny\\Danny_Workspace\\Chess\\Chess Sprites\\WhitePawn.png"));
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackKing.png"));
+		whiteQueen = new Image(      
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhiteQueen.png"));
+		blackQueen = new Image(      
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackQueen.png"));
+		whiteRook = new Image(       
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhiteRook.png"));
+		blackRook = new Image(      
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackRook.png"));
+		whiteBishop = new Image(     
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhiteBishop.png"));
+		blackBishop = new Image(     
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackBishop.png"));
+		whiteKnight = new Image(     
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhiteKnight.png"));
+		blackKnight = new Image(     
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackKnight.png"));
+		blackPawn = new Image(       
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\BlackPawn.png"));
+		whitePawn = new Image(       
+				new FileInputStream("C:\\Users\\Danny\\git\\Chess\\Chess\\Chess Sprites\\WhitePawn.png"));
 
 		primaryStage.setTitle("Chess");
 	

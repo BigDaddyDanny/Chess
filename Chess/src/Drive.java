@@ -15,6 +15,7 @@ public class Drive{
 
 	public static void main(String[] args) {
 		
+		Board.getInstance().init();
 		Draw.startGUI(args);
 		
 	}
