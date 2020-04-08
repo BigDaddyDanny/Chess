@@ -4,8 +4,7 @@ import javax.swing.JOptionPane;
 
 //TODO: team(1 == top, 2 == bottom) 
 /*
- * have two separate validMoves arrays for each player and compare them to each other
- * to figure out if king is moving onto vulnerable position
+ * 
 */
 public class Board {
 
@@ -19,7 +18,6 @@ public class Board {
 	public static Board getInstance() {
 		
 		if(instance == null) {
-			System.out.println("instance is null");
 			instance = new Board();
 		}
 
@@ -29,40 +27,23 @@ public class Board {
 	public void init() {
 		
 		b = Type.newBoard();
-		playerTurn = true;
-		validMoves1 = ValidMoves.getValidMoves(b, true);
-		validMoves2 = ValidMoves.getValidMoves(b, false);
+		playerTurn = false;
+		validMoves1 = ValidMoves.getValidMoves(b, false);
+		validMoves2 = ValidMoves.getValidMoves(b, true);
 		
-		if(AI_ENABLED && playerTurn) {
-			System.out.println("if entered");
+		if(AI_ENABLED) {
 			AI.getInstance().think();
-		}else {
-			System.out.println("if not entered");
 		}
 		
 	}
-	/*private Board() {
-
-		b = Type.newBoard();
-		playerTurn = true;
-		validMoves1 = ValidMoves.getValidMoves(b, true);
-		validMoves2 = ValidMoves.getValidMoves(b, false);
-		
-		if(AI_ENABLED && playerTurn) {
-			System.out.println("if entered");
-			AI.getInstance().think();
-		}else {
-			System.out.println("if not entered");
-		}
-
-	}*/
 
 	// can't allow king to move onto a vulnerable square
-	// must force player to get out of check
+	// must force player to get out of check - better to implement in get valid moes since not getting out of check is invalid move?
 	public void changeBoard(String move) {
-
+		
 		ArrayList<String> playerMoving;
 		ArrayList<String> playerWaiting;
+		
 		if (playerTurn) {
 			playerMoving = validMoves1;
 			playerWaiting = validMoves2;
@@ -82,7 +63,7 @@ public class Board {
 						.parseInt(move.substring(1, 2))];
 		hypo[Integer.parseInt(move.substring(0, 1))][Integer.parseInt(move.substring(1, 2))] = null;
 
-		if (ValidMoves.checkForKingInCheck(hypo, playerTurn)) {
+		if (ValidMoves.checkForKingInCheck(hypo, !playerTurn)) {
 			System.out.println("Invalid move: king in check");
 			return;
 		}
@@ -117,7 +98,7 @@ public class Board {
 		                          						.parseInt(move.substring(1, 2))];
 		                          		b[Integer.parseInt(move.substring(0, 1))][Integer.parseInt(move.substring(1, 2))] = null;
 		
-		
+		changePlayerTurn();
 		
 	}
 
@@ -176,12 +157,15 @@ public class Board {
 	}
 
 	private void changePlayerTurn() {
+		
 		playerTurn = !playerTurn;
-		validMoves1 = ValidMoves.getValidMoves(b, true);
-		validMoves2 = ValidMoves.getValidMoves(b, false);
+		
+		validMoves1 = ValidMoves.getValidMoves(b, false);
+		validMoves2 = ValidMoves.getValidMoves(b, true);
+		
 		checkForWin();
 		
-		if(AI_ENABLED && playerTurn) {
+		if(AI_ENABLED && !playerTurn) {
 			AI.getInstance().think();
 		}
 	}

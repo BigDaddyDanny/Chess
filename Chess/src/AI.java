@@ -2,45 +2,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AI {
-	/* NECESSARY IMPLEMENTATIONS:
-	 * - automatic switch to queen in Board class
-	 * - solution to moves arraylists having size of zero and causing out of bounds exception
-	*/
 	
 	/* PROBLEMS:
-	 * - getBestEnemyMove is recursive and never stops resulting in a stackoverflow error
-	 * - if checkmate is achieved before final move prediction then things could get messy with predictions after *
+	 * - if checkmate is achieved before final move prediction then things could get messy with predictions after
 	 * - AI doesn't remove king in check moves from list of possible moves but shouldn't be 
 	 * 	a problem b/c it will always try to avoid having king in check
-	 * - getHighest and getLowest could cause problems when arraylist size is 0
-	*/
-	
-	/* THOTS:
-	 * - simpler recursive method to replace getBestMove would be to use the moves stored in the 
-	 * arrayList to transformBoard and append the best enemy move to it. This is possible since unlike 
-	 * the Checkers AI there can only be one set of 4 digit moves per turn. 
-	 * - new algorithm needed for predicting the human player's move if I want to avoid adding
-	 * a large amount of if statements that will deteriorate the quality of the AI as well as the
-	 * readability and understandability of the code
-	 * - move combinations that end in checkmate(aka no more moves) should be removed and placed in
-	 * separate list that can either: A) be added back to final list later(pretty good idea, i know)
-	 * B) if resulting in player checkmate can either be added to separate list for manipulation
-	 * post-algorithm or algorithm aborted and that first move in move combination played by AI 
-	 * C) don't remove checkmates because all that 
-	 * 
-	 * 
-	*/
-	
-	/* Desired Prediction rate: 6
-	 * Actual : 4
-	 * Desired Enemy prediction rate: 4/5
-	 * Actual : 4
+	 * - moves that end in checkmate?? no valid moves from ValidMoves will be available
 	*/
 	
 	private final int P_VALUE = 2;
 	private final int R_VALUE = 20;
 	private final int B_VALUE = 15;
-	private final int K_VALUE = 15;
+	private final int K_VALUE = 10;
 	private final int Q_VALUE = 40;
 	private final int KING_VALUE = 10000;
 	
@@ -57,122 +30,56 @@ public class AI {
 	public void think() {
 
 		Type[][] board = copy(Board.getInstance().getB());
-		
-		ArrayList<String> firstMoves = ValidMoves.getValidMoves(board, true);
-		
-		for(int i = 0; i < firstMoves.size(); i++) {
-			firstMoves.set(i, firstMoves.get(i) + getBestEnemyMove(transformBoard(board, firstMoves.get(i))));
-		}
-		
-		ArrayList<String> secondMoves = new ArrayList<String>();
-		for(String move : firstMoves) {
-			
-			ArrayList<String> temp = ValidMoves.getValidMoves(transformBoard(board, move), true);
-			for(String m : temp) {
-				secondMoves.add(m + getBestEnemyMove(transformBoard(board, m)));
-			}
-		}
-		
-		//find piece with highest value
-		ArrayList<Type[][]> finalBoards = new ArrayList<Type[][]>();
-		for(String move : secondMoves) {
-			finalBoards.add(transformBoard(board, move));
-		}
-		
-		ArrayList<Integer> boardValues = new ArrayList<Integer>();
-		for(Type[][] b : finalBoards) {
-			boardValues.add(getBoardValue(b));
-		}
-		
-		Board.getInstance().AIBoardChange(secondMoves.get(getLowest(boardValues)).substring(0, 4));
-	
-		//call boardChange
-		
-		
-		
-	}//end of think()
-	
-	private String getBestEnemyMove(Type[][] board) { //specilalized in returning best move of player two
-		
-		
-		System.out.println("FIRST MOVES");
-		ArrayList<String> firstMoves = ValidMoves.getValidMoves(board, false);
-		for(int i = 0; i < firstMoves.size(); i++) {
-			firstMoves.set(i, firstMoves.get(i) + getBestMove(transformBoard(board, firstMoves.get(i)), true, 5));//MAX: 5
-		}
-		
-		System.out.println("SECOND MOVES");
-		ArrayList<String> secondMoves = new ArrayList<String>();
-		for(String move : firstMoves) {
-			
-			ArrayList<String> temp = ValidMoves.getValidMoves(transformBoard(board, move), false);
-			for(String m : temp) {
-				secondMoves.add(move + m + getBestMove(transformBoard(board, move + m), true, 5));
-			}
-		}
-		
-		ArrayList<Type[][]> finalBoards = new ArrayList<Type[][]>();
-		for(String move : secondMoves) {
-			finalBoards.add(transformBoard(board, move));
-		}
-		
-		ArrayList<Integer> boardValues = new ArrayList<Integer>();
-		for(Type[][] b : finalBoards) {
-			boardValues.add(getBoardValue(b));
-		}
-		
-		return secondMoves.get(getLowest(boardValues)).substring(0, 4);
-	}
-	
-	//unspecialized class which returns the best move for any team
-	private String getBestMove(Type[][] board, boolean team, int counter) {
-		//theoretically...... this method is supposed to return the best move by recursively calling itself everytime 
-		//but recursing less each time to avoid infinite recursion
-		
-		System.out.println(counter);
-		counter--;
-		
-		ArrayList<String> firstMoves = ValidMoves.getValidMoves(board, team);
-		if(counter == 1) {
-			System.out.println("first counter");
-			return getBest(firstMoves, board, team);
-		}
-		
-		for(int i = 0; i < firstMoves.size(); i++) {
-			firstMoves.set(i, firstMoves.get(i) + getBestMove(transformBoard(board, firstMoves.get(i)), !team, counter));
-		}
-		System.out.println("firstMoves");
-		if(counter == 2) {
-			System.out.println("second counter");
-			return getBest(firstMoves, board, team);
-		}
-		
-		System.out.println("secondMoves");
-		ArrayList<String> secondMoves = new ArrayList<String>();
-		for(String firstMove : firstMoves) {
-			
-			ArrayList<String> temp = ValidMoves.getValidMoves(transformBoard(board, firstMove), team);
-			for(String nextMove : temp) {
-				secondMoves.add(firstMove + nextMove + getBestMove(transformBoard(board, firstMove + nextMove), !team, counter));
-			}
-		}
-		if(counter == 3) {
-			System.out.println("third counter");
-			return getBest(secondMoves, board, team);
-		}
-		
-		for(int i = 0; i < secondMoves.size(); i++) {
-			secondMoves.set(i, secondMoves.get(i) + getBestMove(transformBoard(board, secondMoves.get(i)), !team, counter));
-		}
-		
-		System.out.println("fourth counter");
-		return getBest(secondMoves, board, team);		
+				
+		Board.getInstance().AIBoardChange(getBestMove(board, 3, true));		
 		
 	}
 	
-	private String getBest(ArrayList<String> finalMoves, Type[][] board, boolean team) {
+	public String getBestMove(Type[][] b, int counter, boolean team) {
+		int c = counter;//debugging
 		
-		if(finalMoves.size() == 0) {//if statement
+		ArrayList<String> moves = ValidMoves.getValidMoves(b, team);
+
+		for(; counter > 0; counter--) {
+
+			for(int i = 0; i < moves.size(); i++) {	
+				
+				String moveAdded = getBestMove(transformBoard(b, moves.get(i)), counter - 1, !team);
+				moves.set(i, moves.get(i) + moveAdded);
+				
+			}
+
+			
+			ArrayList<String> newMoves = new ArrayList<String>();
+			
+			for(String m1 : moves) {
+				
+				ArrayList<String> possMoves = ValidMoves.getValidMoves(transformBoard(b, m1), team);
+				
+				for(String m2: possMoves) {
+					newMoves.add(m1 + m2);
+				}
+			}
+			
+			moves = newMoves;
+			
+			if(c == 3) {
+				System.out.println(newMoves);
+			}
+			
+		}		
+
+		//debugging
+		if(c == 3) {
+			return getBest(moves, b, team, true);
+		}else {
+			return getBest(moves, b, team, false);
+		}
+	}
+	
+	private String getBest(ArrayList<String> finalMoves, Type[][] board, boolean team, boolean print) {//returns the best move given a list of moves and board
+																						//print variable is for debugging
+		if(finalMoves.size() == 0) {
 			System.out.println("moves array is zero size");
 			return "0000";
 		}
@@ -185,6 +92,11 @@ public class AI {
 		ArrayList<Integer> boardValues = new ArrayList<Integer>();
 		for(Type[][] b : finalBoards) {
 			boardValues.add(getBoardValue(b));
+		}
+		
+		if(print) {
+			System.out.println(finalMoves.get(getHighest(boardValues)));
+			Type.print(finalBoards.get(getHighest(boardValues)));
 		}
 		
 		if(team) {
@@ -276,9 +188,9 @@ public class AI {
 		int index = (int) (Math.random() * arraySpot.size());
 
 		return arraySpot.get(index);
-	}// end of getHighest()
+	}
 	
-private int getLowest(ArrayList<Integer> a) {
+	private int getLowest(ArrayList<Integer> a) {
 		
 		int min = a.get(0);
 		ArrayList<Integer> arraySpot = new ArrayList<Integer>();
@@ -295,14 +207,16 @@ private int getLowest(ArrayList<Integer> a) {
 				arraySpot.clear();
 				arraySpot.add(i);
 			}
-		} // end of for
+		}
 
 		int index = (int) (Math.random() * arraySpot.size());
 
 		return arraySpot.get(index);
-	}// end of getHighest()
+	}
 	
-	private Type[][] transformBoard(Type[][] b, String move){
+	private Type[][] transformBoard(Type[][] board, String move){
+		
+		Type[][] b = copy(board);
 	
 		for(int i = 0; i < move.length() - 1; i += 4) {
 			
@@ -311,14 +225,13 @@ private int getLowest(ArrayList<Integer> a) {
 		
 		}		
 		
-		
-		for(int x = 0; x < 7; x++) {
+		for(int x = 0; x < 8; x++) {
 			if(b[0][x] != null && b[0][x].equals(Type.PAWN2)){
 				b[0][x] = Type.QUEEN2;
 			}
 			
 			if(b[7][x] != null && b[7][x].equals(Type.PAWN1)) {
-				b[0][x] = Type.QUEEN1;
+				b[7][x] = Type.QUEEN1;
 			}
 		}
 		

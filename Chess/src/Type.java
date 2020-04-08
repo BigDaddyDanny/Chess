@@ -48,10 +48,7 @@ public enum Type {
 			case PAWN1:
 				return true;
 		default:
-			break;
-				
-				
-				
+			break;		
 			
 		}
 				

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class ValidMoves {
 
-	public static ArrayList<String> getValidMoves(Type[][] b, boolean team) {
+	public static ArrayList<String> getValidMoves(Type[][] b, boolean team) {//true = AI
 
 		ArrayList<String> moves = new ArrayList<String>();
 
